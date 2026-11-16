@@ -25,6 +25,8 @@ body { background: var(--paper); color: var(--ink); -webkit-font-smoothing: anti
 .btn-quiet:hover { color: var(--ink); background: rgba(15, 27, 23, .05); }
 .btn-sm { padding: .45rem .75rem; font-size: .85rem; border-radius: .5rem; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; }
+/* On very narrow screens a long button label may wrap instead of pushing the page wider. */
+@media (max-width: 400px) { .btn { white-space: normal; text-align: center; max-width: 100%; } }
 
 /* Surfaces */
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 1rem; }
@@ -68,7 +70,7 @@ body { background: var(--paper); color: var(--ink); -webkit-font-smoothing: anti
 .wzc-day { font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif; font-size: 1.25rem; font-weight: 700; line-height: 1.1; }
 .wzc-year { font-size: .78rem; color: var(--mute); font-weight: 600; }
 .wzc-open { font-size: .72rem; color: var(--mute); line-height: 1.25; }
-.wzc-body { padding: .9rem 1rem 1rem; min-width: 0; }
+.wzc-body { padding: .9rem 1rem 1rem; min-width: 0; overflow-wrap: anywhere; }
 .wzc-title { font-weight: 700; font-size: 1.02rem; line-height: 1.3; margin: .45rem 0 .25rem; }
 .wzc-why { color: var(--mute); font-size: .9rem; }
 .wzc details { margin-top: .6rem; }
