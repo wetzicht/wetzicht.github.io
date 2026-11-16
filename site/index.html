@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wetzicht: welke wetswijzigingen raken jouw bedrijf?</title>
+<meta name="description" content="De overheid houdt één officiële lijst bij met alle nieuwe regels voor ondernemers. Wetzicht legt die naast jouw bedrijf en laat alleen zien wat voor jou telt. Gratis, zonder account.">
+<meta name="theme-color" content="#0C5A45">
+<link rel="canonical" href="https://wetzicht.nl/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:site_name" content="Wetzicht">
+<meta property="og:url" content="https://wetzicht.nl/">
+<meta property="og:title" content="Welke wetswijzigingen raken jouw bedrijf?">
+<meta property="og:description" content="De officiële lijst met nieuwe regels voor ondernemers, naast jouw bedrijf gelegd. Je ziet alleen wat voor jou telt, met datum, status en bron. Gratis, zonder account.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230C5A45'/%3E%3Cpath d='M8 10h16M8 22h13' stroke='%23fff' stroke-opacity='.45' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M8 16h9' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='22.5' cy='16' r='2.6' fill='%23F4B740'/%3E%3C/svg%3E">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="config.js"></script>
+<link rel="stylesheet" href="wz.css">
+</head>
+<body class="font-sans">
+
+<a href="#check" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 btn btn-ink no-print">Naar de check</a>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur no-print">
+  <div class="mx-auto max-w-page px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <a href="#top" class="flex items-center gap-2.5" aria-label="Wetzicht, naar boven">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0C5A45"/><path d="M8 10h16M8 22h13" stroke="#fff" stroke-opacity=".45" stroke-width="2.4" stroke-linecap="round"/><path d="M8 16h9" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="16" r="2.6" fill="#F4B740"/></svg>
+      <span class="font-serif text-xl font-bold tracking-tight">Wetzicht</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-1 text-sm" aria-label="Hoofdmenu">
+      <a class="btn btn-quiet" href="#check">De check</a>
+      <a class="btn btn-quiet" href="#kantoren">Voor kantoren</a>
+      <a class="btn btn-quiet" href="#werking">Zo werkt het</a>
+      <a class="btn btn-quiet" href="#vragen">Vragen</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#check">Start de check</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- firm banner, shown when the link came from an accountancy firm -->
+<div id="firm-banner" hidden class="bg-brand text-white no-print">
+  <div class="mx-auto max-w-page px-4 sm:px-6 py-2.5 text-sm">
+    Deze check is je aangeboden door <strong id="firm-name"></strong>. Aan het eind krijg je een profielcode die je kunt terugsturen.
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="mx-auto max-w-page px-4 sm:px-6 pt-12 pb-10 sm:pt-20 sm:pb-16 no-print">
+  <div class="grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+    <div>
+      <p class="eyebrow">Wetswijzigingen voor ondernemers</p>
+      <h1 class="font-serif font-bold tracking-tight text-[2.5rem] leading-[1.05] sm:text-6xl mt-3">
+        <span id="hero-total">115</span> wetswijzigingen. Welke raken jouw bedrijf?
+      </h1>
+      <p class="mt-5 text-lg text-mute max-w-xl leading-relaxed">
+        De overheid houdt één officiële lijst bij van alle nieuwe regels voor ondernemers. Wetzicht legt die lijst naast jouw bedrijf en laat alleen zien wat voor jou telt, met datum, status en de officiële bron.
+      </p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a class="btn btn-primary" href="#check">Start de check <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#kantoren">Ik ben boekhouder of accountant</a>
+      </div>
+      <p class="mt-4 text-sm text-mute">Gratis. Geen account. Je antwoorden blijven in je eigen browser.</p>
+    </div>
+
+    <aside class="card p-5 sm:p-6" aria-label="De lijst van vandaag">
+      <div class="flex items-baseline justify-between gap-3">
+        <h2 class="font-serif text-xl font-bold">De lijst van vandaag</h2>
+        <span class="text-xs text-mute" id="hero-updated"></span>
+      </div>
+      <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-paper p-3"><div class="font-serif text-3xl font-bold" id="hero-vast">0</div><div class="text-xs text-mute mt-0.5">staan vast</div></div>
+        <div class="rounded-xl bg-paper p-3"><div class="font-serif text-3xl font-bold" id="hero-plan">0</div><div class="text-xs text-mute mt-0.5">zijn nog plan</div></div>
+        <div class="rounded-xl bg-paper p-3"><div class="font-serif text-3xl font-bold" id="hero-now">0</div><div class="text-xs text-mute mt-0.5">gelden al</div></div>
+      </div>
+      <p id="hero-stale" hidden class="mt-4 rounded-lg bg-amber-soft text-amber px-3 py-2 text-sm"></p>
+      <h3 class="mt-5 text-xs font-bold uppercase tracking-wider text-mute">Eerstvolgende vaste data</h3>
+      <ol class="mt-2 divide-y divide-line" id="hero-next"></ol>
+      <p class="mt-4 text-xs text-mute">Bron: <a class="underline underline-offset-2" href="https://ondernemersplein.overheid.nl/wetswijzigingen/" target="_blank" rel="noopener">Ondernemersplein</a> (KVK en Rijksoverheid).</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ CHECK ============ -->
+<section id="check" class="border-t border-line bg-white/60 scroll-mt-16 no-print">
+  <div class="mx-auto max-w-page px-4 sm:px-6 py-12 sm:py-16">
+    <div class="max-w-2xl">
+      <p class="eyebrow">De check</p>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight mt-2">Vertel in twee minuten hoe je bedrijf eruitziet</h2>
+      <p class="mt-3 text-mute">Je ziet de teller rechts meelopen. Hoe meer je aanvinkt, hoe scherper de lijst.</p>
+    </div>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-[1fr_20rem] lg:items-start">
+      <div class="card p-5 sm:p-7" id="form"></div>
+
+      <div class="lg:sticky lg:top-24 space-y-4">
+        <div class="card p-5 sm:p-6" aria-live="polite">
+          <p class="eyebrow">Jouw teller</p>
+          <div id="counter-empty" class="mt-3 text-mute text-sm">Kies eerst je rechtsvorm en het aantal werknemers. Dan begint de teller te lopen.</div>
+          <div id="counter" hidden>
+            <div class="flex items-end gap-2 mt-2">
+              <span class="font-serif text-6xl font-bold leading-none text-brand" id="c-raakt">0</span>
+              <span class="pb-1 text-sm text-mute leading-tight">van de <span id="c-total">115</span><br><span data-verb>raken</span> je bedrijf</span>
+            </div>
+            <div class="mt-4 h-2.5 w-full rounded-full bg-[#e6eae2] overflow-hidden flex" role="img" aria-label="Verdeling">
+              <div id="bar-raakt" class="h-full bg-brand transition-all duration-300" style="width:0"></div>
+              <div id="bar-mogelijk" class="h-full bg-[#E0A14B] transition-all duration-300" style="width:0"></div>
+            </div>
+            <dl class="mt-3 space-y-1 text-sm">
+              <div class="flex justify-between"><dt class="flex items-center gap-2"><span class="dot dot-raakt"></span>Raakt je bedrijf</dt><dd class="font-semibold" id="c-raakt2">0</dd></div>
+              <div class="flex justify-between"><dt class="flex items-center gap-2"><span class="dot" style="background:#E0A14B"></span>Mogelijk relevant</dt><dd class="font-semibold" id="c-mogelijk">0</dd></div>
+              <div class="flex justify-between text-mute"><dt class="flex items-center gap-2"><span class="dot dot-nee"></span>Niet voor jou</dt><dd id="c-nee">0</dd></div>
+            </dl>
+            <a href="#lijst" class="btn btn-primary w-full mt-5">Bekijk mijn lijst <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <button type="button" id="reset" class="btn btn-quiet btn-sm">Opnieuw beginnen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section id="lijst" hidden class="border-t border-line scroll-mt-16">
+  <div class="mx-auto max-w-page px-4 sm:px-6 py-12 sm:py-16">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="print-only text-sm text-mute mb-3">Wetzicht · wetswijzigingen voor jouw bedrijf · <span id="print-date"></span></p>
+        <p class="eyebrow">Jouw lijst</p>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight mt-2" id="res-title">Dit verandert er voor jouw bedrijf</h2>
+        <p class="mt-2 text-mute text-sm" id="res-profile"></p>
+      </div>
+      <div class="flex flex-wrap gap-2 no-print">
+        <button type="button" class="btn btn-ghost btn-sm" id="act-ics">Zet in mijn agenda</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="act-print">Print of bewaar als pdf</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="act-link">Kopieer link</button>
+      </div>
+    </div>
+
+    <div class="mt-6 flex flex-wrap items-center gap-2 no-print" role="group" aria-label="Filter op status">
+      <button type="button" class="btn btn-sm btn-ink" data-filter="alles">Alles</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-filter="vast">Staat vast</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-filter="ingegaan">Geldt al</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-filter="plan">Plannen</button>
+    </div>
+
+    <div id="res-empty" hidden class="card p-6 mt-6 text-mute"></div>
+    <div id="res-groups" class="mt-6 space-y-10"></div>
+
+    <!-- hand-off to the accountant -->
+    <div class="card p-5 sm:p-6 mt-10 no-print" id="code-box">
+      <h3 class="font-serif text-xl font-bold" id="code-title">Deel dit met je boekhouder</h3>
+      <p class="mt-1.5 text-sm text-mute" id="code-text">Met deze profielcode ziet je boekhouder of accountant dezelfde lijst, zonder dat je alles opnieuw hoeft uit te leggen. In de code staat alleen wat je hebt aangevinkt. Geen naam, geen contactgegevens.</p>
+      <div class="mt-3 flex flex-wrap items-center gap-2">
+        <code id="code" class="block max-w-full overflow-x-auto rounded-lg bg-paper border border-line px-3 py-2 text-sm"></code>
+        <button type="button" class="btn btn-ink btn-sm" id="act-code">Kopieer code</button>
+      </div>
+    </div>
+
+    <details class="mt-10 no-print" id="rest">
+      <summary class="cursor-pointer font-semibold">Niet voor jouw bedrijf (<span id="rest-n">0</span>): doorzoek de hele lijst</summary>
+      <p class="mt-2 text-sm text-mute">Mis je iets? Zoek hier in alle wetswijzigingen. Staat iets ten onrechte niet in je lijst, dan klopt een vinkje niet of onze indeling mist iets.</p>
+      <input type="search" id="rest-q" class="field mt-3 max-w-md" placeholder="Zoek op trefwoord, bijvoorbeeld btw of verpakking" aria-label="Zoek in alle wetswijzigingen">
+      <ul id="rest-list" class="mt-4 grid gap-x-8 gap-y-1.5 sm:grid-cols-2 text-sm"></ul>
+    </details>
+
+    <p class="mt-8 text-xs text-mute" id="res-foot"></p>
+  </div>
+</section>
+
+<!-- ============ FOR FIRMS ============ -->
+<section id="kantoren" class="border-t border-line bg-ink text-white scroll-mt-16 no-print">
+  <div class="mx-auto max-w-page px-4 sm:px-6 py-14 sm:py-20">
+    <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+      <div class="min-w-0">
+        <p class="eyebrow" style="color:#7FD1B0">Voor boekhouders en accountants</p>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight mt-3 leading-tight">Zie per klant wat er verandert.</h2>
+        <p class="mt-5 text-white/75 text-lg leading-relaxed max-w-xl">
+          Je klanten verwachten dat jij het weet. De eindejaarsbrief met vijftig tips leest niemand, omdat er hooguit vijf voor hen gelden. Wetzicht legt de officiële lijst naast elke klant in je portefeuille.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href="kantoor.html">Open de kantoorversie <span aria-hidden="true">→</span></a>
+          <a class="btn" style="border-color:rgba(255,255,255,.3);color:#fff" href="#prijzen">Bekijk de prijzen</a>
+        </div>
+        <p class="mt-4 text-sm text-white/55">Werkt direct, met voorbeeldklanten. Klantgegevens blijven in je eigen browser.</p>
+      </div>
+
+      <!-- live mini portfolio, drawn from the real data -->
+      <div class="min-w-0 rounded-2xl bg-white/[.06] border border-white/15 p-4 sm:p-5" aria-label="Voorbeeld van een portefeuille">
+        <div class="flex items-center justify-between text-xs text-white/60">
+          <span>Voorbeeld: vijf klanten, eerstvolgende vaste wijzigingen</span>
+        </div>
+        <div class="mt-3 overflow-x-auto"><table class="w-full text-sm border-separate border-spacing-0" id="mini"></table></div>
+        <div class="mt-3 flex items-center gap-4 text-xs text-white/60">
+          <span class="flex items-center gap-1.5"><span class="dot" style="background:#7FD1B0"></span>raakt deze klant</span>
+          <span class="flex items-center gap-1.5"><span class="dot" style="box-shadow:inset 0 0 0 2px #E0A14B"></span>mogelijk</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 grid gap-4 md:grid-cols-3">
+      <div class="rounded-2xl border border-white/15 p-5">
+        <h3 class="font-serif text-xl font-bold">Je portefeuille in één beeld</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">Elke wijziging tegen elke klant. Je ziet in één oogopslag dat de nieuwe regels voor inlenen zeven klanten raken en de youngtimerregeling één.</p>
+      </div>
+      <div class="rounded-2xl border border-white/15 p-5">
+        <h3 class="font-serif text-xl font-bold">Een brief per klant</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">Met alleen wat voor die klant geldt, de reden erbij en de officiële bron. In jouw naam, in de u- of je-vorm. Kopiëren, nalezen, versturen.</p>
+      </div>
+      <div class="rounded-2xl border border-white/15 p-5">
+        <h3 class="font-serif text-xl font-bold">Een signaal als iets verschuift</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">Komt er een wijziging bij, verschuift een datum of wordt een plan wet? Dan zie je welke klanten je moet bellen, in plaats van het achteraf te horen.</p>
+      </div>
+    </div>
+
+    <!-- pricing -->
+    <div id="prijzen" class="mt-16 scroll-mt-20">
+      <h3 class="font-serif text-2xl sm:text-3xl font-bold">Prijzen</h3>
+      <p class="mt-2 text-white/65 text-sm">Per kantoor, per maand, exclusief btw. Maandelijks opzegbaar.</p>
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class="rounded-2xl bg-white text-ink p-6 flex flex-col">
+          <div class="flex items-center justify-between"><h4 class="font-serif text-xl font-bold">Proef</h4><span class="badge kind-v">Nu beschikbaar</span></div>
+          <p class="mt-3"><span class="font-serif text-4xl font-bold">€ 0</span></p>
+          <ul class="mt-4 space-y-2 text-sm text-mute flex-1">
+            <li>De kantoorversie in je browser</li>
+            <li>Tot <span data-free>10</span> klanten</li>
+            <li>Portefeuille, brieven en export</li>
+            <li>Gegevens blijven op je eigen computer</li>
+          </ul>
+          <a class="btn btn-primary mt-6" href="kantoor.html">Open de kantoorversie</a>
+        </div>
+        <div class="rounded-2xl bg-white text-ink p-6 flex flex-col ring-2 ring-[#F4B740]">
+          <div class="flex items-center justify-between"><h4 class="font-serif text-xl font-bold">Kantoor</h4><span class="badge ph-vast">Binnenkort</span></div>
+          <p class="mt-3"><span class="font-serif text-4xl font-bold">€ <span data-price="kantoor">79</span></span> <span class="text-mute text-sm">per maand</span></p>
+          <ul class="mt-4 space-y-2 text-sm text-mute flex-1">
+            <li>Onbeperkt klanten</li>
+            <li>E-mail zodra iets verandert, met de geraakte klanten erbij</li>
+            <li>Intake-link met je eigen kantoornaam</li>
+            <li>Altijd en overal dezelfde gegevens</li>
+          </ul>
+          <a class="btn btn-ink mt-6" href="#aanmelden">Zet me op de lijst</a>
+        </div>
+        <div class="rounded-2xl bg-white text-ink p-6 flex flex-col">
+          <div class="flex items-center justify-between"><h4 class="font-serif text-xl font-bold">Kantoor Plus</h4><span class="badge ph-vast">Binnenkort</span></div>
+          <p class="mt-3"><span class="font-serif text-4xl font-bold">€ <span data-price="plus">199</span></span> <span class="text-mute text-sm">per maand</span></p>
+          <ul class="mt-4 space-y-2 text-sm text-mute flex-1">
+            <li>Alles van Kantoor</li>
+            <li>Meerdere medewerkers</li>
+            <li>Brieven in je eigen huisstijl</li>
+            <li>Klantenlijst inlezen uit je kantoorsoftware</li>
+          </ul>
+          <a class="btn btn-ink mt-6" href="#aanmelden">Zet me op de lijst</a>
+        </div>
+      </div>
+
+      <div id="aanmelden" class="mt-6 rounded-2xl border border-white/15 p-5 sm:p-6 scroll-mt-24">
+        <div id="signup-closed">
+          <h4 class="font-semibold">Aanmelden voor de betaalde versie opent binnenkort</h4>
+          <p class="mt-1 text-sm text-white/65">De proefversie werkt nu al volledig in je browser. Je kunt vandaag je eerste klanten erin zetten en je werk later meenemen met een back-upbestand.</p>
+        </div>
+        <form id="signup" hidden class="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end" novalidate>
+          <div><label class="label" style="color:rgba(255,255,255,.7)" for="su-firm">Kantoor</label><input class="field" id="su-firm" name="kantoor" autocomplete="organization" required></div>
+          <div><label class="label" style="color:rgba(255,255,255,.7)" for="su-mail">E-mailadres</label><input class="field" id="su-mail" name="email" type="email" autocomplete="email" required></div>
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+          <button class="btn btn-primary" type="submit">Zet me op de lijst</button>
+          <p class="sm:col-span-3 text-xs text-white/55" id="su-note">Je krijgt één bericht zodra de betaalde versie open is. Verder niets.</p>
+        </form>
+        <p id="signup-done" hidden class="font-semibold">Genoteerd. Je hoort het zodra de betaalde versie open is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="werking" class="border-t border-line scroll-mt-16 no-print">
+  <div class="mx-auto max-w-page px-4 sm:px-6 py-14 sm:py-20">
+    <div class="grid gap-12 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow">Zo werkt het</p>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight mt-2">De officiële lijst, naast jouw bedrijf gelegd</h2>
+        <ol class="mt-7 space-y-6">
+          <li class="flex gap-4"><span class="flex-none grid place-items-center w-9 h-9 rounded-full bg-brand text-white font-bold">1</span>
+            <div><h3 class="font-semibold">De bron is de overheid</h3><p class="text-mute mt-1">KVK, de Belastingdienst, RVO en andere overheden houden op Ondernemersplein één lijst bij van alle wetswijzigingen voor ondernemers. Die lijst halen wij op en laten wij ongewijzigd.</p></div></li>
+          <li class="flex gap-4"><span class="flex-none grid place-items-center w-9 h-9 rounded-full bg-brand text-white font-bold">2</span>
+            <div><h3 class="font-semibold">Wij voegen de koppeling toe</h3><p class="text-mute mt-1">Bij elke wijziging leggen wij vast voor welk soort bedrijf hij geldt: met personeel of zonder, met zzp'ers, een bestelauto, een webshop, enzovoort. Dat is ons eigen werk.</p></div></li>
+          <li class="flex gap-4"><span class="flex-none grid place-items-center w-9 h-9 rounded-full bg-brand text-white font-bold">3</span>
+            <div><h3 class="font-semibold">Jij ziet alleen wat telt</h3><p class="text-mute mt-1">Met de reden erbij, de datum, of het al zeker is, en een link naar de volledige tekst. Zo kun je het zelf nalezen of doorsturen naar je boekhouder.</p></div></li>
+        </ol>
+      </div>
+      <div class="card p-6 sm:p-8 self-start">
+        <h3 class="font-serif text-2xl font-bold">Wat Wetzicht niet is</h3>
+        <ul class="mt-4 space-y-4 text-[.95rem] leading-relaxed">
+          <li><strong>Geen juridisch advies.</strong> Het is een signalering. Bij twijfel beslist de wettekst, niet deze site.</li>
+          <li><strong>Niet onfeilbaar.</strong> Onze koppeling kan een keer missen. Daarom staat bij elke wijziging waarom hij in je lijst staat, en kun je altijd de hele lijst doorzoeken.</li>
+          <li><strong>Niet compleet.</strong> Gemeentelijke regels, cao's en regels voor één beroepsgroep staan niet altijd op de officiële lijst.</li>
+          <li><strong>Geen glazen bol.</strong> Een plan kan nog veranderen of sneuvelen. Daarom zie je bij elk punt of het vaststaat of nog door de Tweede en Eerste Kamer moet.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="vragen" class="border-t border-line bg-white/60 scroll-mt-16 no-print">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-14 sm:py-20">
+    <p class="eyebrow">Vragen</p>
+    <h2 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight mt-2">Veelgestelde vragen</h2>
+    <div class="mt-8 divide-y divide-line border-y border-line">
+      <details class="py-4 group"><summary class="cursor-pointer font-semibold flex justify-between gap-4">Waar komt de informatie vandaan?<span class="text-mute group-open:rotate-45 transition-transform" aria-hidden="true">+</span></summary>
+        <p class="mt-3 text-mute leading-relaxed">Van <a class="underline underline-offset-2" href="https://ondernemersplein.overheid.nl/wetswijzigingen/" target="_blank" rel="noopener">Ondernemersplein</a>, de site waarop KVK, de Belastingdienst, RVO, UWV en andere overheden samen ondernemers informeren. De teksten zijn vrij te hergebruiken met bronvermelding (CC BY 4.0) en staan hier ongewijzigd. Onderaan zie je wanneer de lijst voor het laatst is opgehaald.</p></details>
+      <details class="py-4 group"><summary class="cursor-pointer font-semibold flex justify-between gap-4">De overheid heeft die lijst al. Wat voegt dit toe?<span class="text-mute group-open:rotate-45 transition-transform" aria-hidden="true">+</span></summary>
+        <p class="mt-3 text-mute leading-relaxed">De officiële lijst kun je filteren op onderwerp en op branche. Daarmee houd je nog tientallen wijzigingen over, waarvan de meeste niet voor jou gelden. Wetzicht kijkt ook naar je rechtsvorm, je personeel, je auto's, wat je verkoopt en aan wie. Voor een gemiddeld bedrijf blijven er dan tien tot twintig over.</p></details>
+      <details class="py-4 group"><summary class="cursor-pointer font-semibold flex justify-between gap-4">Wat gebeurt er met mijn antwoorden?<span class="text-mute group-open:rotate-45 transition-transform" aria-hidden="true">+</span></summary>
+        <p class="mt-3 text-mute leading-relaxed">Niets. De hele check draait in je browser. Je antwoorden worden niet verstuurd en er is geen account. Ze worden alleen in je eigen browser bewaard, zodat je de volgende keer verder kunt. Met "Opnieuw beginnen" wis je ze. Deze site plaatst geen cookies en meet geen bezoek.</p></details>
+      <details class="py-4 group"><summary class="cursor-pointer font-semibold flex justify-between gap-4">Hoe actueel is de lijst?<span class="text-mute group-open:rotate-45 transition-transform" aria-hidden="true">+</span></summary>
+        <p class="mt-3 text-mute leading-relaxed">De datum waarop de lijst voor het laatst is opgehaald staat bovenaan en onderaan. Bij elke wijziging staat bovendien wanneer de overheid de tekst voor het laatst heeft aangepast. Via de link ga je naar de pagina van de overheid zelf, die altijd leidend is.</p></details>
+      <details class="py-4 group"><summary class="cursor-pointer font-semibold flex justify-between gap-4">Wat betekent "plan", "staat vast" en "geldt al"?<span class="text-mute group-open:rotate-45 transition-transform" aria-hidden="true">+</span></summary>
+        <p class="mt-3 text-mute leading-relaxed">"Plan" betekent dat de Tweede Kamer, de Eerste Kamer of allebei nog moeten beslissen. Het kan dus anders uitpakken. "Staat vast" betekent dat de wet is aangenomen en op de genoemde datum ingaat. "Geldt al" betekent dat de regel is ingegaan en dat je er nu aan moet voldoen.</p></details>
+      <details class="py-4 group"><summary class="cursor-pointer font-semibold flex justify-between gap-4">Ik ben boekhouder. Kan ik dit voor al mijn klanten gebruiken?<span class="text-mute group-open:rotate-45 transition-transform" aria-hidden="true">+</span></summary>
+        <p class="mt-3 text-mute leading-relaxed">Ja, daarvoor is de <a class="underline underline-offset-2" href="kantoor.html">kantoorversie</a>. Je zet je klanten erin, of je stuurt ze een link naar deze check en plakt de profielcode die ze terugsturen. Daarna zie je per wijziging welke klanten het raakt en maak je per klant een brief.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-line no-print">
+  <div class="mx-auto max-w-page px-4 sm:px-6 py-10 grid gap-8 md:grid-cols-[1.2fr_1fr_1fr] text-sm">
+    <div>
+      <div class="flex items-center gap-2.5">
+        <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0C5A45"/><path d="M8 10h16M8 22h13" stroke="#fff" stroke-opacity=".45" stroke-width="2.4" stroke-linecap="round"/><path d="M8 16h9" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="16" r="2.6" fill="#F4B740"/></svg>
+        <span class="font-serif text-lg font-bold">Wetzicht</span>
+      </div>
+      <p class="mt-3 text-mute max-w-sm">Welke wetswijzigingen raken welk bedrijf. Een signalering op basis van de officiële lijst, geen juridisch advies.</p>
+      <p class="mt-3 text-mute" id="foot-company" hidden></p>
+      <p class="mt-1" id="foot-contact" hidden></p>
+    </div>
+    <div>
+      <h2 class="font-semibold">Bron en licentie</h2>
+      <p class="mt-2 text-mute">Wetswijzigingen: <a class="underline underline-offset-2" href="https://ondernemersplein.overheid.nl/wetswijzigingen/" target="_blank" rel="noopener">Ondernemersplein</a> (KVK en Rijksoverheid), <a class="underline underline-offset-2" href="https://creativecommons.org/licenses/by/4.0/deed.nl" target="_blank" rel="noopener">CC BY 4.0</a>, ongewijzigd overgenomen. De indeling per soort bedrijf is van Wetzicht en is geen onderdeel van de bron.</p>
+      <p class="mt-2 text-mute" id="foot-updated"></p>
+    </div>
+    <div>
+      <h2 class="font-semibold">Privacy</h2>
+      <p class="mt-2 text-mute">Geen cookies, geen bezoekersmeting, geen account. Wat je invult blijft in je eigen browser en wordt niet verstuurd. De pagina's worden geserveerd door GitHub Pages en de opmaak komt van cdn.tailwindcss.com. Beide partijen zien daarbij je IP-adres.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- mobile sticky counter -->
+<div id="mbar" hidden class="fixed bottom-0 inset-x-0 z-40 border-t border-line bg-white/95 backdrop-blur px-4 py-3 flex items-center justify-between gap-3 lg:hidden no-print">
+  <div class="text-sm leading-tight"><span class="font-serif text-2xl font-bold text-brand" id="m-raakt">0</span> <span class="text-mute"><span data-verb>raken</span> je bedrijf</span></div>
+  <a href="#lijst" class="btn btn-primary btn-sm">Bekijk mijn lijst</a>
+</div>
+
+<div id="toast" hidden role="status" class="fixed left-1/2 -translate-x-1/2 bottom-20 lg:bottom-8 z-50 rounded-full bg-ink text-white text-sm px-4 py-2 shadow-lg no-print"></div>
+
+<noscript><div style="padding:1rem;background:#FCEFD9;text-align:center">Deze check heeft JavaScript nodig. De officiële lijst staat op ondernemersplein.overheid.nl/wetswijzigingen.</div></noscript>
+
+<script src="data/changes.js"></script>
+<script src="data/changelog.js"></script>
+<script src="data/rules.js"></script>
+<script src="engine.js"></script>
+<script>
+(function () {
+  'use strict';
+  // The page needs engine.js and the data folder next to it. A preview of this one file alone has neither: say so instead of breaking silently.
+  if (!window.WZ || !window.WZ.DATA.items.length) {
+    const n = document.createElement('div');
+    n.setAttribute('role', 'alert');
+    n.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99;background:#FCEFD9;color:#5B3206;padding:14px 18px;font:15px/1.45 system-ui,sans-serif;border-top:1px solid #E3C48F';
+    n.textContent = 'Deze pagina kan de bijbehorende bestanden niet laden (engine.js en de map data). Open haar via een webserver of rechtstreeks vanuit de map. Een losse voorvertoning van alleen dit bestand werkt niet.';
+    document.body.appendChild(n);
+    return;
+  }
+  const WZ = window.WZ, CFG = window.WZ_CONFIG || {};
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+  const KEY = 'wetzicht.profile';
+  const items = WZ.DATA.items;
+  const state = { profile: WZ.emptyProfile(), filter: 'alles', firm: '' };
+
+  function store(p) { try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* private mode: fine */ } }
+  function load() { try { return WZ.cleanProfile(JSON.parse(localStorage.getItem(KEY) || 'null')); } catch (e) { return WZ.emptyProfile(); } }
+  let toastTimer;
+  function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2600); }
+
+  /* ----- hash: #p=<profile code> and/or #k=<firm name> ----- */
+  function readHash() {
+    const h = new URLSearchParams(location.hash.replace(/^#/, ''));
+    const p = WZ.decode(h.get('p') || '');
+    const k = (h.get('k') || '').replace(/[<>]/g, '').trim().slice(0, 60);
+    return { p, k };
+  }
+
+  /* ----- hero ----- */
+  function hero() {
+    const n = (ph) => items.filter((x) => x.ph === ph).length;
+    $('#hero-total').textContent = items.length;
+    $('#c-total').textContent = items.length;
+    $('#hero-vast').textContent = n('vast');
+    $('#hero-plan').textContent = n('plan') + n('onbekend');
+    $('#hero-now').textContent = n('ingegaan');
+    const gen = (WZ.DATA.generated || '').slice(0, 10);
+    $('#hero-updated').textContent = gen ? 'Opgehaald op ' + WZ.fmtDate(gen) : '';
+    $('#foot-updated').textContent = gen ? 'Lijst opgehaald op ' + WZ.fmtDate(gen) + '.' : '';
+    // The list is refreshed daily. If that stops, say so plainly instead of showing old data as current.
+    const stale = WZ.staleNote();
+    if (stale) { $('#hero-stale').hidden = false; $('#hero-stale').textContent = stale; }
+    const today = WZ.todayIso();
+    const next = items.filter((x) => x.ph === 'vast' && x.d && x.d >= today).slice(0, 5);
+    $('#hero-next').innerHTML = next.map((x) => {
+      const days = WZ.daysUntil(x.d);
+      return `<li class="py-2.5 flex gap-3 items-baseline"><span class="flex-none w-[5.5rem] text-xs font-bold text-amber">${WZ.esc(WZ.fmtDate(x.d).replace(/ \d{4}$/, ''))}<span class="block font-normal text-mute">over ${days} ${days === 1 ? 'dag' : 'dagen'}</span></span><span class="text-sm leading-snug">${WZ.esc(x.t)}</span></li>`;
+    }).join('') || '<li class="py-2 text-sm text-mute">Geen vaste data in de lijst.</li>';
+    $$('[data-price]').forEach((el) => { const v = (CFG.prices || {})[el.dataset.price]; if (v) el.textContent = v; });
+    $$('[data-free]').forEach((el) => { if (CFG.freeClients) el.textContent = CFG.freeClients; });
+  }
+
+  /* ----- mini portfolio in the firms section: real matches for five example profiles ----- */
+  function mini() {
+    const demo = [
+      ['Bouw', 'WZ1.bv.10.bouw.zzp_inhuur-inlenen-leaseauto-bestel-tijdelijk-b2b'],
+      ['Horeca', 'WZ1.vof.1.horeca.alcohol-jong-nuluren-minloon-b2c-togo-partner'],
+      ['Webshop', 'WZ1.bv.1.handel.b2c-online-producten-import-verpakking-claims-elektronica'],
+      ['Zzp\'er', 'WZ1.ez.0.zakelijk.opdracht-b2b-starter'],
+      ['Uitzend', 'WZ1.bv.50.zakelijk.uitlenen-migrant-huisvesting-minloon-b2b-leaseauto'],
+    ].map(([n, c]) => ({ n, rows: WZ.evaluate(WZ.decode(c)) }));
+    const today = WZ.todayIso();
+    const upcoming = items.filter((x) => x.ph === 'vast' && x.d && x.d >= today)
+      .map((x) => ({ x, hits: demo.filter((d) => d.rows.find((r) => r.item.id === x.id).cls === 'raakt').length }))
+      .filter((o) => o.hits > 0).slice(0, 7);
+    const head = `<thead><tr><th class="text-left font-medium text-white/60 text-xs pb-2 pr-3">Wijziging</th>${demo.map((d) => `<th class="font-medium text-white/60 text-[11px] pb-2 px-1 align-bottom whitespace-nowrap min-w-[3.4rem]">${WZ.esc(d.n)}</th>`).join('')}</tr></thead>`;
+    const body = upcoming.map(({ x }) => `<tr><td class="py-2 pr-3 border-t border-white/10"><span class="block text-[11px] text-[#F4B740] font-semibold">${WZ.esc(WZ.fmtDate(x.d))}</span><span class="block leading-snug text-white/90">${WZ.esc(x.t)}</span></td>${demo.map((d) => {
+      const c = d.rows.find((r) => r.item.id === x.id).cls;
+      const dot = c === 'raakt' ? '<span class="dot" style="background:#7FD1B0" title="raakt"></span>' : c === 'mogelijk' ? '<span class="dot" style="box-shadow:inset 0 0 0 2px #E0A14B" title="mogelijk"></span>' : '';
+      return `<td class="text-center border-t border-white/10">${dot}</td>`;
+    }).join('')}</tr>`).join('');
+    $('#mini').innerHTML = head + '<tbody>' + body + '</tbody>';
+  }
+
+  /* ----- counter ----- */
+  function counter(rows) {
+    const ok = WZ.isComplete(state.profile);
+    $('#counter').hidden = !ok; $('#counter-empty').hidden = ok; $('#mbar').hidden = !ok; $('#lijst').hidden = !ok;
+    if (!ok) return;
+    const s = WZ.summarize(rows);
+    $('#c-raakt').textContent = s.raakt; $('#c-raakt2').textContent = s.raakt; $('#m-raakt').textContent = s.raakt;
+    $$('[data-verb]').forEach((el) => { el.textContent = s.raakt === 1 ? 'raakt' : 'raken'; });
+    $('#c-mogelijk').textContent = s.mogelijk + s.algemeen; $('#c-nee').textContent = s.nee;
+    $('#bar-raakt').style.width = (100 * s.raakt / s.total) + '%';
+    $('#bar-mogelijk').style.width = (100 * (s.mogelijk + s.algemeen) / s.total) + '%';
+  }
+
+  /* ----- results ----- */
+  function results(rows) {
+    if (!WZ.isComplete(state.profile)) return;
+    const s = WZ.summarize(rows);
+    $('#res-title').textContent = s.raakt === 1 ? 'Eén wijziging raakt jouw bedrijf' : `${s.raakt} wijzigingen raken jouw bedrijf`;
+    const soft = s.mogelijk + s.algemeen;
+    $('#res-profile').textContent = WZ.profileLabel(state.profile) + (soft ? ` · en ${soft === 1 ? 'één is' : soft + ' zijn'} mogelijk relevant` : '');
+    const f = state.filter;
+    const pass = (r) => f === 'alles' || r.item.ph === f || (f === 'plan' && r.item.ph === 'onbekend');
+    const hit = rows.filter((r) => r.cls === 'raakt' && pass(r)).sort(WZ.sortItems);
+    const maybe = rows.filter((r) => (r.cls === 'mogelijk' || r.cls === 'algemeen') && pass(r)).sort(WZ.sortItems);
+    const groups = [['vast', 'Staat vast: bereid je voor'], ['ingegaan', 'Geldt al: controleer of je eraan voldoet'], ['plan', 'Plannen: nog niet zeker']];
+    let html = '';
+    for (const [ph, title] of groups) {
+      const list = hit.filter((r) => r.item.ph === ph || (ph === 'plan' && r.item.ph === 'onbekend'));
+      if (!list.length) continue;
+      html += `<div><h3 class="font-serif text-2xl font-bold flex items-baseline gap-3">${title}<span class="text-sm font-sans font-semibold text-mute">${list.length}</span></h3><div class="mt-4 grid gap-3">${list.map((r) => WZ.card(r, { form: 'je' })).join('')}</div></div>`;
+    }
+    if (maybe.length) {
+      html += `<details class="group"><summary class="cursor-pointer font-serif text-2xl font-bold list-none flex items-baseline gap-3"><span class="text-brand text-lg group-open:rotate-90 transition-transform inline-block" aria-hidden="true">›</span>Mogelijk relevant<span class="text-sm font-sans font-semibold text-mute">${maybe.length}</span></summary>
+        <p class="mt-2 text-sm text-mute">Hier is het verband zwakker. Lees de kop en bepaal zelf of het speelt.</p><div class="mt-4 grid gap-3">${maybe.map((r) => WZ.card(r, { form: 'je' })).join('')}</div></details>`;
+    }
+    $('#res-groups').innerHTML = html;
+    const empty = $('#res-empty');
+    empty.hidden = !!html;
+    if (!html) empty.textContent = f === 'alles' ? 'Met deze antwoorden raakt geen van de wijzigingen op de lijst jouw bedrijf. Vink meer aan als dat niet klopt, of doorzoek de hele lijst hieronder.' : 'Niets in deze categorie. Kies "Alles" om je hele lijst te zien.';
+    $$('[data-filter]').forEach((b) => { const on = b.dataset.filter === f; b.classList.toggle('btn-ink', on); b.classList.toggle('btn-ghost', !on); b.setAttribute('aria-pressed', on); });
+
+    $('#code').textContent = WZ.encode(state.profile);
+    $('#print-date').textContent = WZ.fmtDate(WZ.todayIso());
+    const gen = (WZ.DATA.generated || '').slice(0, 10);
+    $('#res-foot').textContent = `Bron: Ondernemersplein (KVK en Rijksoverheid), CC BY 4.0, opgehaald op ${WZ.fmtDate(gen)}. De indeling per soort bedrijf is van Wetzicht. Dit is een signalering en geen juridisch advies.` + (WZ.staleNote() ? ' ' + WZ.staleNote() : '');
+    rest(rows);
+  }
+  function rest(rows) {
+    const q = ($('#rest-q').value || '').trim().toLowerCase();
+    const others = rows.filter((r) => r.cls === 'nee');
+    $('#rest-n').textContent = others.length;
+    const pool = q ? rows.filter((r) => (r.item.t + ' ' + r.item.vw.join(' ') + ' ' + r.item.wat.join(' ')).toLowerCase().includes(q)) : others;
+    $('#rest-list').innerHTML = pool.sort(WZ.sortItems).map((r) => `<li class="flex gap-2 items-baseline"><span class="dot ${r.cls === 'raakt' ? 'dot-raakt' : r.cls === 'nee' ? 'dot-nee' : 'dot-mogelijk'} translate-y-[1px]"></span><a class="hover:underline underline-offset-2" href="${WZ.esc(WZ.safeUrl(r.item.url))}" target="_blank" rel="noopener">${WZ.esc(r.item.t)}</a></li>`).join('')
+      || '<li class="text-mute">Niets gevonden. Probeer een ander woord.</li>';
+  }
+
+  let rows = [];
+  function update() {
+    rows = WZ.evaluate(state.profile);
+    counter(rows);
+    results(rows);
+  }
+
+  /* ----- boot ----- */
+  hero();
+  mini();
+  const fromHash = readHash();
+  state.profile = fromHash.p || load();
+  state.firm = fromHash.k;
+  if (state.firm) {
+    $('#firm-banner').hidden = false; $('#firm-name').textContent = state.firm;
+    $('#code-title').textContent = 'Stuur je profielcode naar ' + state.firm;
+    $('#code-text').textContent = `Kopieer de code hieronder en stuur hem naar ${state.firm}. Daarmee zien zij dezelfde lijst als jij. In de code staat alleen wat je hebt aangevinkt. Geen naam, geen contactgegevens.`;
+  }
+  const formApi = WZ.form($('#form'), state.profile, (p) => { state.profile = p; store(p); update(); }, { id: 'chk' });
+  update();
+  if (fromHash.p) window.addEventListener('load', () => setTimeout(() => $('#lijst').scrollIntoView({ behavior: 'instant', block: 'start' }), 150));
+
+  /* ----- actions ----- */
+  $$('[data-filter]').forEach((b) => b.addEventListener('click', () => { state.filter = b.dataset.filter; results(rows); }));
+  $('#rest-q').addEventListener('input', () => rest(rows));
+  $('#reset').addEventListener('click', () => {
+    state.profile = WZ.emptyProfile(); state.filter = 'alles';
+    try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+    formApi.set(state.profile); update();
+    history.replaceState(null, '', location.pathname + location.search + (state.firm ? '#k=' + encodeURIComponent(state.firm) : ''));
+    $('#check').scrollIntoView({ block: 'start' });
+  });
+  $('#act-ics').addEventListener('click', () => {
+    const list = rows.filter((r) => r.cls === 'raakt' && r.item.d && r.item.d >= WZ.todayIso());
+    if (!list.length) return toast('Er staan geen toekomstige data in je lijst.');
+    WZ.download('wetswijzigingen-wetzicht.ics', WZ.ics(list, 'je'), 'text/calendar;charset=utf-8');
+    toast(`${list.length} data opgeslagen als agendabestand.`);
+  });
+  $('#act-link').addEventListener('click', async () => {
+    const url = location.href.split('#')[0] + '#p=' + WZ.encode(state.profile);
+    toast((await WZ.copy(url)) ? 'Link gekopieerd.' : 'Kopiëren lukte niet. Gebruik de profielcode hieronder.');
+  });
+  $('#act-code').addEventListener('click', async () => { toast((await WZ.copy(WZ.encode(state.profile))) ? 'Profielcode gekopieerd.' : 'Kopiëren lukte niet. Selecteer de code met de hand.'); });
+  $('#act-print').addEventListener('click', () => window.print());
+  let reopened = [];
+  // The printed report is compact: only the "mogelijk relevant" group has to be opened.
+  window.addEventListener('beforeprint', () => { reopened = $$('#res-groups > details:not([open])'); reopened.forEach((d) => { d.open = true; }); });
+  window.addEventListener('afterprint', () => { reopened.forEach((d) => { d.open = false; }); reopened = []; });
+
+  /* ----- footer and sign-up, only when configured ----- */
+  const co = CFG.company || {};
+  const coLine = [co.name, co.address, co.kvk && 'KVK ' + co.kvk, co.btw && 'Btw ' + co.btw].filter(Boolean).join(' · ');
+  if (coLine) { $('#foot-company').hidden = false; $('#foot-company').textContent = coLine; }
+  if (CFG.contactEmail) {
+    const a = document.createElement('a'); a.href = 'mailto:' + CFG.contactEmail; a.textContent = CFG.contactEmail; a.className = 'underline underline-offset-2';
+    $('#foot-contact').hidden = false; $('#foot-contact').append(a);
+  }
+  if (CFG.signupEndpoint || CFG.contactEmail) {
+    $('#signup-closed').hidden = true; $('#signup').hidden = false;
+    $('#signup').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      if (fd.get('_gotcha')) return;
+      const firm = String(fd.get('kantoor') || '').trim(), mail = String(fd.get('email') || '').trim();
+      if (!firm || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) { $('#su-note').textContent = 'Vul je kantoornaam en een geldig e-mailadres in.'; return; }
+      const done = () => { $('#signup').hidden = true; $('#signup-done').hidden = false; };
+      if (CFG.signupEndpoint) {
+        try {
+          const res = await fetch(CFG.signupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ kantoor: firm, email: mail, bron: 'wetzicht-aanmelding' }) });
+          if (res.ok) return done();
+        } catch (err) { /* fall through to mail */ }
+      }
+      if (CFG.contactEmail) {
+        const a = document.createElement('a');
+        a.href = 'mailto:' + CFG.contactEmail + '?subject=' + encodeURIComponent('Aanmelding Wetzicht: ' + firm) + '&body=' + encodeURIComponent(`Zet ons op de lijst voor de betaalde versie.\n\nKantoor: ${firm}\nE-mail: ${mail}`);
+        a.click(); done();
+      } else $('#su-note').textContent = 'Versturen lukte niet. Probeer het later opnieuw.';
+    });
+  }
+
+  window.__wetzicht = { state, update, rows: () => rows };
+})();
+</script>
+</body>
+</html>

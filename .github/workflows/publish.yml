@@ -1,0 +1,63 @@
+name: Publish
+
+# Publishes the site folder to GitHub Pages.
+#   - on every push to main
+#   - every day, after fetching the official list of law changes again
+#   - by hand, with the "Run workflow" button
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 4 * * *'   # 04:17 UTC, early morning in the Netherlands
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+
+      # If the official source is unreachable this step fails, nothing is published,
+      # and the site keeps showing the previous version. GitHub mails the owner.
+      - name: Fetch the official list again
+        id: refresh
+        if: github.event_name != 'push'
+        run: node pipeline/update.mjs
+
+      - name: Save the result in the repository
+        if: github.event_name != 'push'
+        env:
+          CHANGED: ${{ steps.refresh.outputs.changed }}
+        run: |
+          # Commit when the list really changed, and every Monday anyway:
+          # GitHub switches off scheduled runs in a repository that sees no activity for 60 days.
+          if [ "$CHANGED" = "true" ] || [ "$(date -u +%u)" = "1" ]; then
+            git config user.name "Wetzicht"
+            git config user.email "noreply@wetzicht.nl"
+            git add site/data pipeline/snapshot.json
+            if ! git diff --cached --quiet; then
+              git commit -m "Refresh the official list"
+              git push
+            fi
+          fi
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@v5

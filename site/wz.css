@@ -1,0 +1,101 @@
+/* Wetzicht shared components. Layout uses Tailwind utilities; these are the pieces both pages share. */
+:root {
+  --paper: #F4F5F0; --card: #FFFFFF; --ink: #0F1B17; --mute: #55625C; --line: #DCE1D8;
+  --brand: #0C5A45; --brand-dark: #08402F; --brand-soft: #E3F1EA;
+  --amber: #A8530A; --amber-soft: #FCEFD9;
+  --red: #A32118; --red-soft: #FBE7E4;
+  --slate: #46536A; --slate-soft: #E8ECF3;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 4px; }
+::selection { background: var(--brand); color: #fff; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border-radius: .6rem; padding: .7rem 1.1rem; font-weight: 600; font-size: .95rem; line-height: 1.2; border: 1px solid transparent; cursor: pointer; transition: background .15s, border-color .15s, color .15s, transform .05s; text-decoration: none; white-space: nowrap; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-primary:hover { background: var(--brand-dark); }
+.btn-ink { background: var(--ink); color: #fff; }
+.btn-ink:hover { background: #1c2c26; }
+.btn-ghost { background: var(--card); color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn-quiet { background: transparent; color: var(--mute); padding: .5rem .7rem; font-weight: 500; }
+.btn-quiet:hover { color: var(--ink); background: rgba(15, 27, 23, .05); }
+.btn-sm { padding: .45rem .75rem; font-size: .85rem; border-radius: .5rem; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+/* Surfaces */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 1rem; }
+.eyebrow { font-size: .75rem; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; color: var(--brand); }
+.rule { height: 1px; background: var(--line); border: 0; }
+
+/* Choice controls: real inputs, styled labels */
+.opt { position: relative; display: flex; align-items: flex-start; gap: .6rem; padding: .65rem .8rem; border: 1px solid var(--line); border-radius: .7rem; background: var(--card); cursor: pointer; font-size: .92rem; line-height: 1.35; transition: border-color .12s, background .12s; }
+.opt:hover { border-color: #9aa79f; }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt .box { flex: none; width: 1.1rem; height: 1.1rem; margin-top: .08rem; border: 1.5px solid #9aa79f; border-radius: .3rem; background: #fff; display: grid; place-items: center; transition: background .12s, border-color .12s; }
+.opt.radio .box { border-radius: 999px; }
+.opt .box::after { content: ''; width: .5rem; height: .5rem; border-radius: .12rem; background: #fff; transform: scale(0); transition: transform .12s; }
+.opt.radio .box::after { border-radius: 999px; }
+.opt:has(input:checked) { border-color: var(--brand); background: var(--brand-soft); }
+.opt:has(input:checked) .box { background: var(--brand); border-color: var(--brand); }
+.opt:has(input:checked) .box::after { transform: scale(1); }
+.opt:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 2px; }
+.field { width: 100%; border: 1px solid var(--line); border-radius: .6rem; padding: .6rem .75rem; background: #fff; font-size: .95rem; color: var(--ink); }
+.field:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: var(--brand); }
+.label { display: block; font-size: .8rem; font-weight: 600; color: var(--mute); margin-bottom: .3rem; }
+
+/* Badges */
+.badge { display: inline-flex; align-items: center; gap: .3rem; border-radius: 999px; padding: .15rem .6rem; font-size: .72rem; font-weight: 700; letter-spacing: .01em; white-space: nowrap; }
+.ph-ingegaan { background: var(--ink); color: #fff; }
+.ph-vast { background: var(--amber-soft); color: var(--amber); }
+.ph-plan { background: var(--slate-soft); color: var(--slate); }
+.ph-onbekend { background: #ececec; color: #555; }
+.kind-p { background: var(--red-soft); color: var(--red); }
+.kind-k { background: var(--amber-soft); color: var(--amber); }
+.kind-v { background: var(--brand-soft); color: var(--brand-dark); }
+.kind-r { background: var(--slate-soft); color: var(--slate); }
+.dot { width: .6rem; height: .6rem; border-radius: 999px; display: inline-block; flex: none; }
+.dot-raakt { background: var(--brand); }
+.dot-mogelijk { background: transparent; box-shadow: inset 0 0 0 2px var(--amber); }
+.dot-nee { background: #dfe4dc; }
+
+/* Law change card */
+.wzc { display: grid; grid-template-columns: 5.2rem 1fr; gap: 0; background: var(--card); border: 1px solid var(--line); border-radius: .9rem; overflow: hidden; }
+.wzc-date { padding: .9rem .6rem; text-align: center; border-right: 1px solid var(--line); background: #FAFBF8; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: .1rem; }
+.wzc-day { font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif; font-size: 1.25rem; font-weight: 700; line-height: 1.1; }
+.wzc-year { font-size: .78rem; color: var(--mute); font-weight: 600; }
+.wzc-open { font-size: .72rem; color: var(--mute); line-height: 1.25; }
+.wzc-body { padding: .9rem 1rem 1rem; min-width: 0; }
+.wzc-title { font-weight: 700; font-size: 1.02rem; line-height: 1.3; margin: .45rem 0 .25rem; }
+.wzc-why { color: var(--mute); font-size: .9rem; }
+.wzc details { margin-top: .6rem; }
+.wzc summary { cursor: pointer; font-size: .86rem; font-weight: 600; color: var(--brand); list-style: none; display: inline-flex; align-items: center; gap: .3rem; }
+.wzc summary::-webkit-details-marker { display: none; }
+.wzc summary::before { content: '+'; display: inline-grid; place-items: center; width: 1rem; height: 1rem; border: 1px solid currentColor; border-radius: .25rem; font-size: .8rem; line-height: 1; }
+.wzc details[open] summary::before { content: '\2212'; }
+.wzc .src { margin-top: .6rem; padding: .8rem .9rem; background: var(--paper); border-radius: .6rem; font-size: .9rem; line-height: 1.55; }
+.wzc .src p { margin: 0 0 .55rem; white-space: pre-line; }
+.wzc .src ul { margin: 0 0 .55rem 1.1rem; list-style: disc; }
+.wzc .src h4 { font-size: .74rem; text-transform: uppercase; letter-spacing: .07em; color: var(--mute); font-weight: 700; margin: .2rem 0 .3rem; }
+.wzc .src a { color: var(--brand); text-decoration: underline; text-underline-offset: 2px; }
+.wzc .attrib { font-size: .76rem; color: var(--mute); margin-top: .5rem; }
+@media (max-width: 480px) { .wzc { grid-template-columns: 4.1rem 1fr; } .wzc-day { font-size: 1.05rem; } }
+
+/* Print: a compact report. One block per law change with date, status, title, reason and the source address. */
+.print-only { display: none; }
+.wzc-url { font-size: .78rem; color: var(--mute); margin-top: .35rem; word-break: break-all; }
+@media print {
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  .wzc { break-inside: avoid; border-color: #bbb; }
+  .wzc details { display: none; }
+  .wzc-date { background: #fff; }
+  /* Keep badge colours on paper: without this "Geldt al" would be white text on white. */
+  .badge, .dot { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h3 { break-after: avoid; }
+  a { color: inherit; text-decoration: none; }
+}
