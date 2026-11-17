@@ -40,7 +40,7 @@
       <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0C5A45"/><path d="M8 10h16M8 22h13" stroke="#fff" stroke-opacity=".45" stroke-width="2.4" stroke-linecap="round"/><path d="M8 16h9" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="16" r="2.6" fill="#F4B740"/></svg>
       <span class="font-serif text-lg font-bold">Wetzicht <span class="font-sans font-medium text-white/60 text-sm">Kantoor</span></span>
     </a>
-    <span class="hidden sm:inline text-xs text-white/60">Proefversie. Alles blijft in deze browser.</span>
+    <span class="hidden sm:inline text-xs text-white/60 truncate" id="lic-badge">Proefversie. Alles blijft in deze browser.</span>
   </div>
 </header>
 
@@ -104,12 +104,11 @@
   const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
   const esc = WZ.esc;
   const KEY = 'wetzicht.kantoor';
-  const LIMIT = CFG.freeClients || 0;
   const items = WZ.DATA.items;
   const GEN = (WZ.DATA.generated || '').slice(0, 10);
 
   /* ---------- state ---------- */
-  const fresh = () => ({ firm: '', form: 'u', clients: [], seen: null, seenAt: '' });
+  const fresh = () => ({ firm: '', form: 'u', clients: [], seen: null, seenAt: '', license: '' });
   let S = fresh();
   const ui = { tab: 'portefeuille', client: null, filter: 'alles', maybe: false, open: null, letter: { plan: true, now: true, maybe: false, text: true }, example: false };
   function load() {
@@ -127,6 +126,63 @@
   const uid = () => 'k' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   let toastTimer;
   function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2800); }
+
+  /* ---------- licence: a signed code lifts the client limit ----------
+     A code is "WZ-" + payload + "." + signature. The payload says who it is for, which plan and until when.
+     The app checks the signature with the public keys in config.js. It can verify a code but never make one. */
+  const PLAN = { seizoen: 'Seizoenspas', kantoor: 'Kantoor', plus: 'Kantoor Plus' };
+  const LIC_ERR = {
+    vorm: 'Dit is geen licentiecode. Een code begint met WZ- en is ruim 200 tekens lang. Plak hem in zijn geheel.',
+    handtekening: 'Deze code is niet geldig. Controleer of je de hele code hebt geplakt.',
+    ingetrokken: 'Deze code is ingetrokken en werkt niet meer.',
+    browser: 'Deze browser kan de code hier niet controleren. Open de kantoorversie op https://wetzicht.nl/kantoor.html en probeer het daar.',
+  };
+  let LIC = { state: 'none' };   // 'none' = trial, 'ok', or 'expired'
+  const limit = () => (LIC.state === 'ok' ? LIC.max : (CFG.freeClients || 0));   // 0 = no limit
+  const b64u = (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((s.length + 3) % 4)), (c) => c.charCodeAt(0));
+  /* Returns { state: 'ok' | 'expired', code, name, plan, until, max, id } or { state: 'bad', why }. */
+  async function readLicense(code) {
+    const clean = String(code || '').replace(/\s+/g, '');
+    const m = clean.match(/^WZ-([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/);
+    if (!m) return { state: 'bad', why: 'vorm' };
+    if (!window.crypto || !window.crypto.subtle) return { state: 'bad', why: 'browser' };
+    let bytes, signature, d;
+    try { bytes = b64u(m[1]); signature = b64u(m[2]); d = JSON.parse(new TextDecoder().decode(bytes)); } catch (e) { return { state: 'bad', why: 'vorm' }; }
+    let signed = false;
+    for (const jwk of CFG.licenseKeys || []) {
+      try {
+        const key = await crypto.subtle.importKey('jwk', jwk, { name: 'ECDSA', namedCurve: 'P-256' }, false, ['verify']);
+        if (await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, key, signature, bytes)) { signed = true; break; }
+      } catch (e) { /* try the next key */ }
+    }
+    if (!signed) return { state: 'bad', why: 'handtekening' };
+    if (!d || d.v !== 1 || typeof d.n !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(d.e || '')) return { state: 'bad', why: 'vorm' };
+    if ((CFG.revoked || []).includes(d.id)) return { state: 'bad', why: 'ingetrokken' };
+    return {
+      state: d.e >= WZ.todayIso() ? 'ok' : 'expired',
+      code: clean, name: d.n.slice(0, 60), plan: PLAN[d.p] || 'Licentie', until: d.e,
+      max: Number.isInteger(d.m) && d.m > 0 ? d.m : 0, id: String(d.id || ''),
+    };
+  }
+  /* At start: check the stored code again, because it may have expired or been withdrawn since last time. */
+  async function restoreLicense() {
+    if (!S.license) return;
+    const r = await readLicense(S.license);
+    LIC = r.state === 'bad' ? { state: 'none', rejected: r.why } : r;
+    render();
+  }
+  /* A link like kantoor.html#licentie=WZ-... activates the code in one click. */
+  async function licenseFromLink() {
+    const code = new URLSearchParams(location.hash.replace(/^#/, '')).get('licentie');
+    if (!code) return;
+    history.replaceState(null, '', location.pathname + location.search);   // keep the code out of the address bar
+    const r = await readLicense(code);
+    ui.tab = 'instellingen'; ui.client = null;
+    if (r.state === 'ok') { S.license = r.code; LIC = r; save(); render(); toast(`Licentie geactiveerd voor ${r.name}.`); return; }
+    render();
+    const err = $('#lic-error');
+    if (err) err.textContent = r.state === 'expired' ? `Deze code is op ${WZ.fmtDate(r.until)} verlopen.` : LIC_ERR[r.why];
+  }
 
   /* ---------- matching, cached per render ---------- */
   let M = new Map();   // clientId -> Map(itemId -> row)
@@ -165,6 +221,7 @@
     recompute();
     $$('.tab').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === ui.tab)));
     $('#n-clients').textContent = S.clients.length ? '(' + S.clients.length + ')' : '';
+    $('#lic-badge').textContent = (LIC.state === 'ok' ? `Licentie: ${LIC.name}.` : 'Proefversie.') + ' Alles blijft in deze browser.';
     const ns = signals().length; const badge = $('#n-signals'); badge.hidden = !ns; badge.textContent = ns;
     const app = $('#app');
     if (ui.tab === 'portefeuille') app.innerHTML = viewPortfolio();
@@ -250,7 +307,14 @@
   }
   function viewClients() {
     if (!S.clients.length) return emptyState();
-    const full = LIMIT && S.clients.length >= LIMIT;
+    const lim = limit();
+    const full = lim && S.clients.length >= lim;
+    // Why no more clients can be added, and what to do about it. Existing clients always stay usable.
+    const fullNote = !full ? '' : LIC.state === 'ok'
+      ? `Je licentie geldt voor ${lim} klanten. Voor meer klanten heb je een andere licentie nodig.`
+      : LIC.state === 'expired'
+        ? `Je licentie is op ${esc(WZ.fmtDate(LIC.until))} verlopen. Je klanten blijven staan en je kunt alles blijven bekijken, brieven maken en exporteren. Nieuwe klanten toevoegen kan weer met een nieuwe code. <button class="underline underline-offset-2 font-semibold" data-act="go-license">Code invoeren</button>`
+        : `De proefversie houdt ${lim} klanten vast. Met een licentiecode vervalt die grens. <button class="underline underline-offset-2 font-semibold" data-act="go-license">Code invoeren</button>`;
     const list = [...S.clients].sort((a, b) => a.name.localeCompare(b.name, 'nl')).map((c) => {
       const { s, next } = clientStats(c);
       return `<li class="card p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
@@ -264,7 +328,7 @@
         <div><p class="eyebrow">Klanten</p><h1 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight mt-1">${S.clients.length} ${S.clients.length === 1 ? 'klant' : 'klanten'}</h1></div>
         <div class="flex flex-wrap gap-2"><button class="btn btn-primary" data-act="new" ${full ? 'disabled' : ''}>Nieuwe klant</button></div>
       </div>
-      ${full ? `<p class="mt-4 rounded-xl bg-[#FCEFD9] text-amber px-4 py-3 text-sm">De proefversie houdt ${LIMIT} klanten vast. Voor meer klanten komt er een betaalde versie. Tot die tijd kun je een klant verwijderen om ruimte te maken.</p>` : ''}
+      ${full ? `<p class="mt-4 rounded-xl bg-[#FCEFD9] text-amber px-4 py-3 text-sm">${fullNote}</p>` : ''}
       <div class="card p-4 sm:p-5 mt-5 bg-brand-soft border-brand/20">
         <h2 class="font-semibold">Laat klanten het zelf invullen</h2>
         <p class="text-sm text-mute mt-1">Stuur deze link. De klant doet de check en stuurt je een profielcode terug. Die plak je bij "Nieuwe klant". In de link staat alleen je kantoornaam.</p>
@@ -388,10 +452,32 @@ Dit overzicht is gebaseerd op de officiële lijst van Ondernemersplein (KVK en R
       <h2 class="font-serif text-xl font-bold mt-10">Logboek van de bron</h2>
       <p class="text-sm text-mute mt-1">Wat er tussen twee keer ophalen op de officiële lijst veranderde.</p>
       ${log ? `<ul class="card p-4 sm:p-5 mt-3 space-y-2">${log}</ul>` : '<p class="card p-4 sm:p-5 mt-3 text-sm text-mute">Nog leeg. Het logboek vult zich vanaf de tweede keer dat de lijst wordt opgehaald.</p>'}
-      <p class="text-xs text-mute mt-3">In de proefversie zie je signalen als je deze pagina opent. De betaalde versie stuurt ze per e-mail.</p>`;
+      <p class="text-xs text-mute mt-3">Je ziet signalen zodra je deze pagina opent.</p>`;
   }
 
   /* ---------- settings ---------- */
+  function licenseCard() {
+    const how = CFG.contactEmail
+      ? `Nog geen code? Mail naar <a class="underline underline-offset-2" href="mailto:${esc(CFG.contactEmail)}?subject=${encodeURIComponent('Licentie Wetzicht Kantoor')}">${esc(CFG.contactEmail)}</a>.`
+      : 'Licentiecodes zijn binnenkort te koop.';
+    let status;
+    if (LIC.state === 'ok') {
+      status = `<p class="rounded-xl bg-brand-soft px-4 py-3 text-sm"><strong>${esc(LIC.plan)}</strong> op naam van <strong>${esc(LIC.name)}</strong>. Geldig tot en met ${esc(WZ.fmtDate(LIC.until))}, voor ${LIC.max ? LIC.max + ' klanten' : 'onbeperkt veel klanten'}.</p>`;
+    } else if (LIC.state === 'expired') {
+      status = `<p class="rounded-xl bg-[#FCEFD9] text-amber px-4 py-3 text-sm">De licentie van ${esc(LIC.name)} is op ${esc(WZ.fmtDate(LIC.until))} verlopen. Je klanten blijven staan en je kunt alles blijven bekijken, brieven maken en exporteren. Nieuwe klanten toevoegen kan weer met een nieuwe code.</p>`;
+    } else {
+      status = `<p class="text-sm text-mute">Je gebruikt de proefversie: maximaal ${CFG.freeClients || 0} klanten. Met een licentiecode vervalt die grens. ${how}</p>`
+        + (LIC.rejected ? `<p class="mt-2 rounded-xl bg-[#FCEFD9] text-amber px-4 py-3 text-sm">${LIC.rejected === 'ingetrokken' ? 'De code die hier was opgeslagen is ingetrokken en werkt niet meer.' : LIC.rejected === 'browser' ? esc(LIC_ERR.browser) : 'De code die hier was opgeslagen is niet meer geldig.'}</p>` : '');
+    }
+    return `<div class="card p-5 sm:p-6 mt-5" id="licentie">
+        <h2 class="font-semibold">Licentie</h2>
+        <div class="mt-3">${status}</div>
+        <label class="label mt-4" for="lic-code">${LIC.state === 'none' ? 'Licentiecode' : 'Andere licentiecode'}</label>
+        <textarea class="field" id="lic-code" rows="3" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="WZ-..."></textarea>
+        <p class="text-sm text-red mt-2 empty:hidden" id="lic-error" role="alert"></p>
+        <div class="mt-3 flex flex-wrap gap-2"><button class="btn btn-primary btn-sm" data-act="lic-activate">Activeer</button>${S.license ? '<button class="btn btn-quiet btn-sm" data-act="lic-remove">Verwijder licentie</button>' : ''}</div>
+      </div>`;
+  }
   function viewSettings() {
     return `<p class="eyebrow">Instellingen en export</p><h1 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight mt-1">Je kantoor</h1>
       <div class="mt-6 grid gap-5 lg:grid-cols-2">
@@ -416,10 +502,10 @@ Dit overzicht is gebaseerd op de officiële lijst van Ondernemersplein (KVK en R
           </div>
         </div>
       </div>
+      ${licenseCard()}
       <div class="card p-5 sm:p-6 mt-5">
         <h2 class="font-semibold">Over de gegevens</h2>
         <p class="text-sm text-mute mt-2 leading-relaxed">De wetswijzigingen komen van <a class="underline underline-offset-2" href="https://ondernemersplein.overheid.nl/wetswijzigingen/" target="_blank" rel="noopener">Ondernemersplein</a> (KVK en Rijksoverheid), licentie <a class="underline underline-offset-2" href="https://creativecommons.org/licenses/by/4.0/deed.nl" target="_blank" rel="noopener">CC BY 4.0</a>, en staan hier ongewijzigd. Opgehaald op ${esc(WZ.fmtDate(GEN))}: ${items.length} wijzigingen. De koppeling met soorten bedrijven is van Wetzicht. Die kan een keer missen, dus lees mee en gebruik je eigen kennis van de klant. Wetzicht is een signalering en geen juridisch advies.</p>
-        ${LIMIT ? `<p class="text-sm text-mute mt-2">Proefversie: maximaal ${LIMIT} klanten.</p>` : ''}
       </div>`;
   }
 
@@ -439,7 +525,7 @@ Dit overzicht is gebaseerd op de officiële lijst van Ondernemersplein (KVK en R
     let added = 0;
     for (const [name, code] of DEMO) {
       if (have.has(name)) continue;
-      if (LIMIT && S.clients.length >= LIMIT) break;
+      if (limit() && S.clients.length >= limit()) break;
       S.clients.push({ id: uid(), name, contact: '', profile: WZ.decode(code) }); added++;
     }
     save(); toast(added ? `${added} voorbeeldklanten toegevoegd.` : 'De voorbeeldklanten staan er al in.');
@@ -450,7 +536,7 @@ Dit overzicht is gebaseerd op de officiële lijst van Ondernemersplein (KVK en R
   let editing = null, formApi = null, draft = WZ.emptyProfile();
   function openDialog(id) {
     editing = id ? S.clients.find((c) => c.id === id) : null;
-    if (!editing && LIMIT && S.clients.length >= LIMIT) return toast(`De proefversie houdt ${LIMIT} klanten vast.`);
+    if (!editing && limit() && S.clients.length >= limit()) return toast(LIC.state === 'ok' ? `Je licentie geldt voor ${limit()} klanten.` : `Zonder geldige licentie kun je ${limit()} klanten bijhouden.`);
     draft = editing ? WZ.cleanProfile(editing.profile) : WZ.emptyProfile();
     $('#dlg-title').textContent = editing ? 'Profiel bewerken' : 'Nieuwe klant';
     $('#c-name').value = editing ? editing.name : '';
@@ -495,7 +581,7 @@ Dit overzicht is gebaseerd op de officiële lijst van Ondernemersplein (KVK en R
     toast('Csv-bestand opgeslagen.');
   }
   function backup() {
-    WZ.download('wetzicht-backup-' + WZ.todayIso() + '.json', JSON.stringify({ app: 'wetzicht-kantoor', version: 1, saved: new Date().toISOString(), firm: S.firm, form: S.form, clients: S.clients }, null, 2), 'application/json');
+    WZ.download('wetzicht-backup-' + WZ.todayIso() + '.json', JSON.stringify({ app: 'wetzicht-kantoor', version: 1, saved: new Date().toISOString(), firm: S.firm, form: S.form, license: S.license || '', clients: S.clients }, null, 2), 'application/json');
     toast('Back-up opgeslagen.');
   }
   $('#restore-file').addEventListener('change', async (e) => {
@@ -506,10 +592,15 @@ Dit overzicht is gebaseerd op de officiële lijst van Ondernemersplein (KVK en R
       if (data.app !== 'wetzicht-kantoor' || !Array.isArray(data.clients)) throw new Error('format');
       const clients = data.clients.map(cleanClient).filter(Boolean);
       if (S.clients.length && !confirm(`Deze back-up bevat ${clients.length} klanten en vervangt de ${S.clients.length} klanten die er nu in staan. Doorgaan?`)) return;
-      const dropped = LIMIT && clients.length > LIMIT ? clients.length - LIMIT : 0;
-      if (dropped && !confirm(`De proefversie houdt ${LIMIT} klanten vast. Van de ${clients.length} klanten in deze back-up worden de laatste ${dropped} niet teruggezet. Het back-upbestand zelf blijft compleet. Doorgaan?`)) return;
-      S.clients = dropped ? clients.slice(0, LIMIT) : clients;
+      // A back-up carries its licence. If that code is still valid it counts here too, so a move to a new computer keeps every client.
+      const lic = data.license ? await readLicense(data.license) : null;
+      const keepLic = lic && lic.state !== 'bad' && !(LIC.state === 'ok' && lic.state === 'expired');
+      const lim = keepLic ? (lic.state === 'ok' ? lic.max : (CFG.freeClients || 0)) : limit();
+      const dropped = lim && clients.length > lim ? clients.length - lim : 0;
+      if (dropped && !confirm(`Zonder geldige licentie kun je ${lim} klanten bijhouden. Van de ${clients.length} klanten in deze back-up worden de laatste ${dropped} niet teruggezet. Het back-upbestand zelf blijft compleet. Doorgaan?`)) return;
+      S.clients = dropped ? clients.slice(0, lim) : clients;
       S.firm = String(data.firm || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 60); S.form = data.form === 'je' ? 'je' : 'u';
+      if (keepLic) { S.license = lic.code; LIC = lic; }
       ui.client = null;
       save(); render(); toast(dropped ? `${S.clients.length} klanten teruggezet, ${dropped} niet.` : `${S.clients.length} klanten teruggezet.`);
     } catch (err) { toast('Dit is geen back-up van Wetzicht.'); }
@@ -542,7 +633,18 @@ Dit overzicht is gebaseerd op de officiële lijst van Ondernemersplein (KVK en R
       case 'csv': csv(); break;
       case 'backup': backup(); break;
       case 'restore': $('#restore-file').click(); break;
-      case 'wipe': if (confirm('Alle klanten en instellingen in deze browser wissen? Dit kan niet ongedaan worden gemaakt.')) { try { localStorage.removeItem(KEY); } catch (err) { /* ignore */ } S = fresh(); markSeen(); go('portefeuille'); toast('Alles gewist.'); } break;
+      case 'wipe': if (confirm('Alle klanten en instellingen in deze browser wissen? Dit kan niet ongedaan worden gemaakt.' + (S.license ? ' Je licentie blijft staan.' : ''))) { const keep = S.license; S = fresh(); S.license = keep; markSeen(); go('portefeuille'); toast('Alles gewist.'); } break;
+      case 'go-license': go('instellingen'); { const card = $('#licentie'); if (card) card.scrollIntoView({ block: 'center' }); const box = $('#lic-code'); if (box) box.focus({ preventScroll: true }); } break;
+      case 'lic-activate': {
+        const err = $('#lic-error'), raw = $('#lic-code').value;
+        if (!raw.trim()) { err.textContent = 'Plak eerst je licentiecode in het vak.'; break; }
+        const r = await readLicense(raw);
+        if (r.state === 'bad') { err.textContent = LIC_ERR[r.why]; break; }
+        if (r.state === 'expired') { err.textContent = `Deze code is op ${WZ.fmtDate(r.until)} verlopen.`; break; }
+        S.license = r.code; LIC = r; save(); render(); toast(`Licentie geactiveerd voor ${r.name}.`);
+        break;
+      }
+      case 'lic-remove': if (confirm('De licentie uit deze browser verwijderen? Je klanten blijven staan. Bewaar de code als je hem later weer wilt gebruiken.')) { S.license = ''; LIC = { state: 'none' }; save(); render(); toast('Licentie verwijderd.'); } break;
       case 'seen': markSeen(); render(); toast('Gemarkeerd als gezien.'); break;
       case 'example-on': ui.example = true; render(); break;
       case 'example-off': ui.example = false; render(); break;
@@ -565,7 +667,9 @@ Dit overzicht is gebaseerd op de officiële lijst van Ondernemersplein (KVK en R
 
   load();
   render();
-  window.__kantoor = { get S() { return S; }, ui, render, signals, letter, markSeen };
+  // The licence check is asynchronous: draw first as a trial, then again once the stored code has been checked.
+  const ready = restoreLicense().then(licenseFromLink);
+  window.__kantoor = { get S() { return S; }, get LIC() { return LIC; }, ui, render, signals, letter, markSeen, readLicense, restoreLicense, limit, ready };
 })();
 </script>
 </body>

@@ -17,6 +17,15 @@ window.WZ_CONFIG = {
 
   // The free local version of the firm app holds this many clients. 0 = no limit.
   freeClients: 10,
+
+  // Licence codes lift that limit. These are PUBLIC keys: the app can check a code with them but not make one.
+  // The matching private key is on the owner's computer (see tools/license.mjs in the playbook).
+  // To change keys, add the new one here and keep the old one until its codes have expired.
+  licenseKeys: [
+    { kty: 'EC', crv: 'P-256', x: 'DejAmMJPzRQH8ZEp9UkI8B4tTzbDafAvPgyZohD9dN4', y: 'ObPoIfcZMuyEan39Nr9lhHRpRBfWGQM3OJC2yP2CP4k' },
+  ],
+  // Ids of codes that must stop working, for example after a refund. The id is printed when a code is made.
+  revoked: [],
 };
 
 /* Design tokens for Tailwind (loaded after the Tailwind script in both pages). */

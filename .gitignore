@@ -1,4 +1,12 @@
 # Strategy notes stay on the owner's computer and are never published.
 PLAYBOOK.md
 
+# The tool that makes licence codes is for the owner only.
+# The private key itself lives outside this folder, in ~/.wetzicht.
+tools/
+*.pem
+
+# Scratch files used while testing.
+site/_test_*
+
 .DS_Store
