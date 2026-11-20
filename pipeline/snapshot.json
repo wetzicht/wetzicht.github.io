@@ -1,5 +1,5 @@
 {
- "at": "2026-11-18",
+ "at": "2026-11-20",
  "items": [
   {
    "id": "cryptoaanbieders-moeten-gegevens-delen-met-belastingdienst",
@@ -250,8 +250,8 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
-   "hash": "1cp9fcp"
+   "mod": "2026-11-20",
+   "hash": "1lmt06w"
   },
   {
    "id": "belasting-op-leidingwater-omhoog",
@@ -285,9 +285,9 @@
    "t": "Extra belasting op zakelijke benzine- en dieselauto’s voor werknemers",
    "d": "2027-01-01",
    "dn": "",
-   "ph": "vast",
-   "mod": "2026-10-05",
-   "hash": "k51div"
+   "ph": "plan",
+   "mod": "2026-11-20",
+   "hash": "8qnsk8"
   },
   {
    "id": "geen-overdrachtsbelasting-als-woningcorporaties-daeb-woningen-overnemen",
@@ -322,8 +322,8 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-17",
-   "hash": "4lpwiz"
+   "mod": "2026-11-20",
+   "hash": "1isby8s"
   },
   {
    "id": "maximum-forfait-innovatiebox-gaat-omhoog-naar-eur-100000",
