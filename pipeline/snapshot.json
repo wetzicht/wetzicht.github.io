@@ -1,5 +1,5 @@
 {
- "at": "2026-11-20",
+ "at": "2026-11-23",
  "items": [
   {
    "id": "cryptoaanbieders-moeten-gegevens-delen-met-belastingdienst",
@@ -259,7 +259,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "19e0cq"
   },
   {
@@ -268,7 +268,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "1sivxjw"
   },
   {
@@ -295,7 +295,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "15zh6vv"
   },
   {
@@ -331,7 +331,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "bgucwl"
   },
   {
@@ -340,7 +340,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "nlf4ky"
   },
   {
@@ -367,7 +367,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "2eccrl"
   },
   {
@@ -412,7 +412,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "bdy484"
   },
   {
@@ -421,7 +421,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "2y1dc8"
   },
   {
@@ -457,7 +457,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "6wxjtl"
   },
   {
@@ -556,7 +556,7 @@
    "d": "2028-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "osaj67"
   },
   {
@@ -619,7 +619,7 @@
    "d": "2028-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "16rqbcj"
   },
   {
@@ -691,7 +691,7 @@
    "d": "2029-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "1hnzylc"
   },
   {
@@ -781,7 +781,7 @@
    "d": null,
    "dn": "nog niet bekend",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "1ojmxe3"
   },
   {
@@ -972,6 +972,15 @@
    "ph": "vast",
    "mod": "2026-08-28",
    "hash": "1vwl3v8"
+  },
+  {
+   "id": "vergunning-verplicht-voor-bedrijven-die-asbest-verwijderen",
+   "t": "Vergunning wordt verplicht voor bedrijven die asbest verwijderen",
+   "d": null,
+   "dn": "maart 2027",
+   "ph": "onbekend",
+   "mod": "2026-11-23",
+   "hash": "1vm14z6"
   },
   {
    "id": "verplicht-bijmengen-biobrandstof-binnenvaart",
