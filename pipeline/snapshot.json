@@ -1,5 +1,5 @@
 {
- "at": "2026-11-23",
+ "at": "2026-11-24",
  "items": [
   {
    "id": "cryptoaanbieders-moeten-gegevens-delen-met-belastingdienst",
@@ -232,7 +232,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "hnvb8t"
   },
   {
@@ -241,7 +241,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "1an5c8i"
   },
   {
@@ -259,7 +259,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-23",
+   "mod": "2026-11-24",
    "hash": "19e0cq"
   },
   {
@@ -286,7 +286,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-20",
+   "mod": "2026-11-23",
    "hash": "8qnsk8"
   },
   {
@@ -322,7 +322,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-20",
+   "mod": "2026-11-23",
    "hash": "1isby8s"
   },
   {
@@ -385,7 +385,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "13ht2li"
   },
   {
@@ -403,7 +403,7 @@
    "d": "2027-01-01",
    "dn": "",
    "ph": "vast",
-   "mod": "2026-08-28",
+   "mod": "2026-11-24",
    "hash": "whwqjw"
   },
   {
@@ -524,6 +524,15 @@
    "hash": "bck006"
   },
   {
+   "id": "werkgever-kan-asielzoeker-na-3-maanden-inzetten",
+   "t": "Werkgever kan asielzoeker na 3 maanden inzetten",
+   "d": "2027-07-01",
+   "dn": "nog niet bekend",
+   "ph": "plan",
+   "mod": "2026-11-23",
+   "hash": "1k6lcs6"
+  },
+  {
    "id": "veilige-digitale-producten-verplicht-cra",
    "t": "Veilige digitale producten verplicht (Cyber Resilience Act)",
    "d": "2027-12-11",
@@ -565,7 +574,7 @@
    "d": "2028-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "ipl2wy"
   },
   {
@@ -592,7 +601,7 @@
    "d": "2028-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "1m9glvg"
   },
   {
@@ -655,7 +664,7 @@
    "d": "2028-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "1p5rqlq"
   },
   {
@@ -664,7 +673,7 @@
    "d": "2028-03-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "1oey4rl"
   },
   {
@@ -682,7 +691,7 @@
    "d": "2029-01-01",
    "dn": "",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "1n7hai3"
   },
   {
@@ -934,7 +943,7 @@
    "d": null,
    "dn": "nog niet bekend",
    "ph": "plan",
-   "mod": "2026-11-16",
+   "mod": "2026-11-23",
    "hash": "porj0"
   },
   {
@@ -978,9 +987,9 @@
    "t": "Vergunning wordt verplicht voor bedrijven die asbest verwijderen",
    "d": null,
    "dn": "maart 2027",
-   "ph": "onbekend",
-   "mod": "2026-11-23",
-   "hash": "1vm14z6"
+   "ph": "vast",
+   "mod": "2026-11-24",
+   "hash": "1vmupur"
   },
   {
    "id": "verplicht-bijmengen-biobrandstof-binnenvaart",
@@ -1008,15 +1017,6 @@
    "ph": "plan",
    "mod": "2026-09-08",
    "hash": "i4zc4s"
-  },
-  {
-   "id": "werkgever-kan-asielzoeker-na-3-maanden-inzetten",
-   "t": "Werkgever kan asielzoeker na 3 maanden inzetten",
-   "d": null,
-   "dn": "nog niet bekend",
-   "ph": "plan",
-   "mod": "2026-11-16",
-   "hash": "x01vxc"
   },
   {
    "id": "werkgevers-moeten-betaling-van-minimumloon-bewijzen",
