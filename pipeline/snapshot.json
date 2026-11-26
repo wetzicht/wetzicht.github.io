@@ -1,6 +1,15 @@
 {
- "at": "2026-11-24",
+ "at": "2026-11-26",
  "items": [
+  {
+   "id": "kilometerregistratie-voor-middelgrote-bedrijven-afgeschaft",
+   "t": "Kilometerregistratie voor middelgrote bedrijven afgeschaft",
+   "d": "2026-01-01",
+   "dn": "nog niet bekend",
+   "ph": "ingegaan",
+   "mod": "2026-11-26",
+   "hash": "ou32hm"
+  },
   {
    "id": "cryptoaanbieders-moeten-gegevens-delen-met-belastingdienst",
    "t": "Cryptoaanbieders moeten gegevens delen met Belastingdienst",
@@ -794,15 +803,6 @@
    "hash": "1ojmxe3"
   },
   {
-   "id": "kilometerregistratie-voor-middelgrote-bedrijven-afgeschaft",
-   "t": "Kilometerregistratie voor middelgrote bedrijven wordt afgeschaft",
-   "d": null,
-   "dn": "nog niet bekend",
-   "ph": "plan",
-   "mod": "2026-09-08",
-   "hash": "1ndmphj"
-  },
-  {
    "id": "kinderopvang-moet-ernstige-incidenten-melden",
    "t": "Kinderopvang moet ernstige incidenten melden",
    "d": null,
@@ -988,7 +988,7 @@
    "d": null,
    "dn": "maart 2027",
    "ph": "vast",
-   "mod": "2026-11-24",
+   "mod": "2026-11-26",
    "hash": "1vmupur"
   },
   {
